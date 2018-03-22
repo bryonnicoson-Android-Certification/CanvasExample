@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
@@ -30,6 +31,9 @@ public class MyCanvasView extends View {
 
     // path starting points
     private float mX, mY;
+
+    // frame
+    private Rect mFrame;
 
     MyCanvasView(Context context) {
         this(context, null);
@@ -66,14 +70,21 @@ public class MyCanvasView extends View {
         mExtraBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mExtraCanvas = new Canvas(mExtraBitmap);
         mExtraCanvas.drawColor(mBackgroundColor);
+
+        // create frame
+        int inset = 40;
+        mFrame = new Rect(inset, inset, w - inset, h - inset);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // draw the bitmap that stores the path the user has drawn
+        // draw the bitmap of the user drawn path
         canvas.drawBitmap(mExtraBitmap, 0, 0, null);
+
+        // draw frame
+        canvas.drawRect(mFrame, mPaint);
     }
 
     @Override
